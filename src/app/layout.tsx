@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
       <body
         className={`${playfairDisplay.variable} ${inter.variable} antialiased flex min-h-screen flex-col`}
       >
+        <ScrollToTop />
         {children}
       </body>
     </html>

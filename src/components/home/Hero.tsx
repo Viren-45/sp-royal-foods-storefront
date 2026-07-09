@@ -1,4 +1,5 @@
 // src/components/home/Hero.tsx
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -18,6 +19,18 @@ const TRUST_STRIP = [
   { icon: HandHeart, label: "Sourced with Care" },
 ] as const;
 
+const handleExploreBenefits = () => {
+  const section = document.getElementById("why-choose-us");
+  if (!section) return;
+
+  section.scrollIntoView({ behavior: "smooth" });
+
+  // Clean the hash from the URL after scrolling so clicking
+  // the button again always works, and page refresh stays at top
+  setTimeout(() => {
+    window.history.replaceState(null, "", window.location.pathname);
+  }, 800);
+};
 export default function Hero() {
   return (
     <section className="relative min-h-[85vh] w-full overflow-hidden">
@@ -64,12 +77,12 @@ export default function Hero() {
               Shop Collection
               <span aria-hidden>→</span>
             </Link>
-            <Link
-              href="/#why-choose-us"
-              className="rounded-md border border-[#1F3D2E] px-6 py-3 text-sm font-medium text-[#1F3D2E] transition-colors hover:bg-[#1F3D2E]/5"
+            <button
+              onClick={handleExploreBenefits}
+              className="rounded-md border border-[#1F3D2E] px-6 py-3 text-sm font-medium text-[#1F3D2E] transition-colors hover:bg-[#1F3D2E]/5 cursor-pointer"
             >
               Explore Benefits
-            </Link>
+            </button>
           </div>
         </div>
       </div>

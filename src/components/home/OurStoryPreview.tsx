@@ -6,7 +6,19 @@ import Link from "next/link";
 export default function OurStoryPreview() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-20">
-      <div className="grid grid-cols-1 items-center gap-10 overflow-hidden rounded-2xl bg-[#F1E7D0] lg:grid-cols-2 lg:gap-0">
+      {/* Section heading */}
+      <div className="mx-auto max-w-2xl text-center">
+        <p className="mb-3 text-sm font-medium uppercase tracking-widest text-[#1F3D2E]">
+          Our Story
+        </p>
+        <h2 className="font-heading text-4xl font-medium text-[#1B1B1B] sm:text-5xl">
+          A Legacy of Purity
+        </h2>
+        <div className="mx-auto my-6 h-px w-16 bg-[#D8D6C0]" />
+      </div>
+
+      {/* Card */}
+      <div className="mt-10 grid grid-cols-1 items-center gap-10 overflow-hidden rounded-2xl bg-[#F1E7D0] lg:grid-cols-2 lg:gap-0">
         {/* Image */}
         <div className="relative h-100 w-full lg:h-140">
           <Image
@@ -20,14 +32,14 @@ export default function OurStoryPreview() {
         {/* Text content */}
         <div className="px-6 py-10 text-center lg:px-16 lg:text-left">
           <p className="mb-3 text-sm font-medium uppercase tracking-widest text-[#C9A227]">
-            Our Story
+            Rooted in Tradition
           </p>
 
-          <h2 className="font-heading text-4xl font-medium leading-tight text-[#1B1B1B] sm:text-5xl">
-            A Legacy of Purity,
+          <h3 className="font-heading text-3xl font-medium leading-tight text-[#1B1B1B] sm:text-4xl">
+            Where Every Batch
             <br />
-            Rooted in Tradition
-          </h2>
+            Tells a Story
+          </h3>
 
           <div className="mx-auto my-6 h-px w-16 bg-[#D8D6C0] lg:mx-0" />
 
