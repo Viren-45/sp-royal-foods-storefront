@@ -1,9 +1,8 @@
-// src/app/(site)/layout.tsx
-
+// src/app/(site)/(main)/layout.tsx
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
-export default function SiteLayout({
+export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -11,7 +10,7 @@ export default function SiteLayout({
   return (
     <>
       <Navbar />
-      {children}
+      <div className="flex-1">{children}</div>
       <Footer />
     </>
   );

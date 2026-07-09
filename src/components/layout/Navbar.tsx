@@ -6,7 +6,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, User, ShoppingCart, Menu, X } from "lucide-react";
+import { Search, ShoppingCart, Menu, X } from "lucide-react";
+import AccountMenu from "@/components/layout/AccountMenu";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -21,7 +22,7 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 z-50 w-full border-b border-white/40 bg-white/10 shadow-sm backdrop-blur-lg">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2">
         {/* Logo + Brand Name */}
         <Link href="/" className="flex items-center gap-3">
           <Image
@@ -74,12 +75,7 @@ export default function Navbar() {
           >
             <Search size={20} />
           </button>
-          <button
-            aria-label="Account"
-            className="text-[#1B1B1B] transition-colors hover:text-[#1F3D2E]"
-          >
-            <User size={20} />
-          </button>
+          <AccountMenu />
           <button
             aria-label="Cart"
             className="relative text-[#1B1B1B] transition-colors hover:text-[#1F3D2E]"
@@ -129,9 +125,7 @@ export default function Navbar() {
             <button aria-label="Search" className="text-[#1B1B1B]">
               <Search size={20} />
             </button>
-            <button aria-label="Account" className="text-[#1B1B1B]">
-              <User size={20} />
-            </button>
+            <AccountMenu />
             <button aria-label="Cart" className="text-[#1B1B1B]">
               <ShoppingCart size={20} />
             </button>
