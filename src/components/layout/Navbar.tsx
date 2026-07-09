@@ -32,7 +32,7 @@ export default function Navbar() {
             height={56}
             priority
           />
-          <span className="text-lg font-semibold tracking-wide text-[#1B1B1B]">
+          <span className="text-sm font-semibold tracking-wide text-[#1B1B1B] md:text-lg">
             S.P. ROYAL FOODS
           </span>
         </Link>

@@ -46,3 +46,18 @@ export type ProductWithDetails = Product & {
   product_variants: ProductVariant[];
   product_images: ProductImage[];
 };
+
+export type Address = {
+  id: string;
+  user_id: string;
+  label: string;
+  full_name: string;
+  phone: string;
+  address_line1: string;
+  address_line2: string | null;
+  city: string;
+  state: string;
+  pincode: string;
+  is_default: boolean;
+  created_at: string;
+};
