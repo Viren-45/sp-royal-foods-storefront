@@ -1,4 +1,4 @@
-// src/app/page.tsx
+// src/app/(site)/page.tsx
 
 import Hero from "@/components/home/Hero";
 import Collections from "@/components/home/Collections";

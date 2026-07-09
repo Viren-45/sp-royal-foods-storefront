@@ -1,0 +1,38 @@
+// src/lib/supabase/server.ts
+
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
+
+/**
+ * Supabase client for use in Server Components, Server Actions,
+ * and Route Handlers. Manages the logged-in user's session via
+ * cookies, so queries still respect that user's RLS permissions
+ * (this is NOT an admin/bypass client).
+ */
+export async function createClient() {
+  const cookieStore = await cookies();
+
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options),
+            );
+          } catch {
+            // setAll can be called from a Server Component, where
+            // cookies can't be modified. This is safe to ignore if
+            // middleware is refreshing the session (which we'll set
+            // up next).
+          }
+        },
+      },
+    },
+  );
+}
