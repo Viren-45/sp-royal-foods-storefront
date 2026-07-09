@@ -39,7 +39,7 @@ export default function AccountBottomNav() {
                 className="flex flex-1 flex-col items-center gap-1.5 py-1 transition-all"
               >
                 <div
-                  className={`flex flex-col items-center gap-1.5 rounded-full px-5 py-2 transition-all ${
+                  className={`flex flex-col items-center gap-1.5 rounded-full px-3 py-2 transition-all ${
                     isActive
                       ? "bg-[#1F3D2E] text-white shadow-md"
                       : "text-[#5C5C4E] hover:text-[#1F3D2E]"
@@ -60,7 +60,7 @@ export default function AccountBottomNav() {
           <div className="mx-1 h-8 w-px bg-[#D8D6C0]" />
           <button
             onClick={handleLogout}
-            className="flex cursor-pointer flex-col items-center gap-1.5 rounded-full px-4 py-2 text-[#C0392B] transition-colors hover:bg-[#C0392B]/10"
+            className="flex cursor-pointer flex-col items-center gap-1.5 rounded-full px-2 py-2 text-[#C0392B] transition-colors hover:bg-[#C0392B]/10"
             aria-label="Log out"
           >
             <LogOut size={20} strokeWidth={1.5} />
