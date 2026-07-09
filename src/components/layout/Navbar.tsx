@@ -56,7 +56,6 @@ export default function Navbar() {
               </li>
             );
           })}
-
           <li>
             <span
               className="cursor-not-allowed text-sm font-medium tracking-wide text-[#5C5C4E] opacity-50"
@@ -67,7 +66,7 @@ export default function Navbar() {
           </li>
         </ul>
 
-        {/* Right icons */}
+        {/* Desktop right icons */}
         <div className="hidden items-center gap-5 md:flex">
           <button
             aria-label="Search"
@@ -87,20 +86,38 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile menu toggle */}
-        <button
-          aria-label="Toggle menu"
-          className="text-[#1B1B1B] md:hidden"
-          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile: icons + hamburger */}
+        <div className="flex items-center gap-4 md:hidden">
+          <button
+            aria-label="Search"
+            className="text-[#1B1B1B] transition-colors hover:text-[#1F3D2E]"
+          >
+            <Search size={20} />
+          </button>
+          <AccountMenu />
+          <button
+            aria-label="Cart"
+            className="relative text-[#1B1B1B] transition-colors hover:text-[#1F3D2E]"
+          >
+            <ShoppingCart size={20} />
+            <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#1F3D2E] text-[10px] font-medium text-white">
+              0
+            </span>
+          </button>
+          <button
+            aria-label="Toggle menu"
+            className="text-[#1B1B1B]"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </nav>
 
-      {/* Mobile menu panel */}
+      {/* Mobile menu panel — links only, centered */}
       {isMobileMenuOpen && (
-        <div className="border-t border-white/40 bg-white/10 px-6 py-4 shadow-sm backdrop-blur-lg md:hidden">
-          <ul className="flex flex-col gap-4">
+        <div className="border-t border-white/40 bg-white/10 px-6 py-6 shadow-sm backdrop-blur-lg md:hidden">
+          <ul className="flex flex-col items-center gap-5 text-center">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <Link
@@ -120,16 +137,6 @@ export default function Navbar() {
               </span>
             </li>
           </ul>
-
-          <div className="mt-4 flex items-center gap-5 border-t border-white/20 pt-4">
-            <button aria-label="Search" className="text-[#1B1B1B]">
-              <Search size={20} />
-            </button>
-            <AccountMenu />
-            <button aria-label="Cart" className="text-[#1B1B1B]">
-              <ShoppingCart size={20} />
-            </button>
-          </div>
         </div>
       )}
     </header>

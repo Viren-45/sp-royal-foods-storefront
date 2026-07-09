@@ -83,12 +83,9 @@ export default function Hero() {
         {/* Mobile trust strip — horizontal scroll */}
         <div className="absolute bottom-6 left-0 right-0 z-10 px-4">
           <div className="rounded-xl bg-[#EDEFDD]/80 px-4 py-4 backdrop-blur-sm">
-            <ul className="flex items-center gap-6 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <ul className="flex items-center gap-6 overflow-x-auto [-ms-overflow-style:none] scrollbar-none [&::-webkit-scrollbar]:hidden">
               {TRUST_STRIP.map(({ icon: Icon, label }) => (
-                <li
-                  key={label}
-                  className="flex flex-shrink-0 items-center gap-2"
-                >
+                <li key={label} className="flex shrink-0 items-center gap-2">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#1F3D2E]/30 text-[#1F3D2E]">
                     <Icon size={14} />
                   </span>
