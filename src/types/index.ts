@@ -83,3 +83,56 @@ export type GuestCartItem = {
   variant_id: string;
   quantity: number;
 };
+
+export type OrderStatus =
+  | "pending"
+  | "confirmed"
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled"
+  | "refunded";
+
+export type ShippingAddress = {
+  full_name: string;
+  phone: string;
+  address_line1: string;
+  address_line2: string | null;
+  city: string;
+  state: string;
+  pincode: string;
+  label: string;
+};
+
+export type Order = {
+  id: string;
+  user_id: string;
+  status: OrderStatus;
+  address_id: string | null;
+  shipping_address: ShippingAddress;
+  subtotal: number;
+  shipping_fee: number;
+  total: number;
+  razorpay_order_id: string | null;
+  razorpay_payment_id: string | null;
+  razorpay_signature: string | null;
+  tracking_number: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type OrderItem = {
+  id: string;
+  order_id: string;
+  product_id: string | null;
+  variant_id: string | null;
+  quantity: number;
+  price_at_purchase: number;
+  product_name: string;
+  variant_label: string;
+  created_at: string;
+};
+
+export type OrderWithItems = Order & {
+  order_items: OrderItem[];
+};
