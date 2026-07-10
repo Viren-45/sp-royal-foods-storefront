@@ -1,20 +1,23 @@
 // src/app/api/webhooks/razorpay/route.ts
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import { createClient } from "@supabase/supabase-js";
+import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { clearCart } from "@/lib/supabase/queries/cart";
 import { sendOrderConfirmationEmail } from "@/lib/email/orderConfirmation";
 
-/**
- * Admin Supabase client — uses service role key to bypass RLS.
- * Required here because the webhook is not a user request
- * (no session/cookie), so the regular server client can't
- * update orders or fetch user emails.
- */
-function createAdminClient() {
-  return createClient(
+// TODO: Replace with sb_secret_ key once Supabase adds RLS bypass
+// support for new key format. Tracked issue:
+// github.com/orgs/supabase/discussions/43187
+function getAdminSupabase() {
+  return createAdminClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    },
   );
 }
 
@@ -40,7 +43,7 @@ export async function POST(request: Request) {
     }
 
     const event = JSON.parse(body);
-    const supabase = createAdminClient();
+    const supabase = getAdminSupabase();
 
     if (event.event === "payment.captured") {
       const payment = event.payload.payment.entity;
@@ -96,7 +99,7 @@ export async function POST(request: Request) {
           await sendOrderConfirmationEmail(order, customerEmail);
         } catch (emailError) {
           // Log but don't fail the webhook — order is confirmed,
-          // email failure shouldn't roll back the payment confirmation
+          // email failure shouldn't roll back payment confirmation
           console.error("Failed to send confirmation email:", emailError);
         }
       }

@@ -1,11 +1,28 @@
 // src/app/api/razorpay/create-order/route.ts
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { razorpay } from "@/lib/razorpay/client";
 import { createOrder } from "@/lib/supabase/queries/orders";
 import { getShippingSettings } from "@/lib/supabase/queries/settings";
 import { getCartItems } from "@/lib/supabase/queries/cart";
 import type { ShippingAddress } from "@/types";
+
+// TODO: Replace with sb_secret_ key once Supabase adds RLS bypass
+// support for new key format. Tracked issue:
+// github.com/orgs/supabase/discussions/43187
+function getAdminSupabase() {
+  return createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    },
+  );
+}
 
 export async function POST(request: Request) {
   try {
@@ -76,11 +93,19 @@ export async function POST(request: Request) {
       },
     });
 
-    // Store razorpay_order_id on our DB order
-    await supabase
+    // Use service role client to update razorpay_order_id —
+    // regular server client is blocked by RLS since there's
+    // no update policy for orders (by design — only trusted
+    // server-side code should update orders)
+    const adminSupabase = getAdminSupabase();
+    const { error: updateError } = await adminSupabase
       .from("orders")
       .update({ razorpay_order_id: razorpayOrder.id })
       .eq("id", orderId);
+
+    if (updateError) {
+      console.error("Failed to update razorpay_order_id:", updateError.message);
+    }
 
     return NextResponse.json({
       orderId,
