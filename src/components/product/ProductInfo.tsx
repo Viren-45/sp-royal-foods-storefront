@@ -2,9 +2,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Minus, Plus, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils/currency";
+import { useCart } from "@/context/CartContext";
+import { useUser } from "@/hooks/useUser";
 import type { ProductWithDetails } from "@/types";
 
 type ProductInfoProps = {
@@ -12,16 +15,31 @@ type ProductInfoProps = {
 };
 
 export default function ProductInfo({ product }: ProductInfoProps) {
+  const router = useRouter();
+  const { user } = useUser();
+  const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
   const isOutOfStock = product.stock_status === "out_of_stock";
 
-  const handleAddToCart = () => {
-    // TODO (Phase 3): wire up real cart logic — guest cart via
-    // localStorage when logged out, Supabase cart_items when
-    // logged in. For now this is a non-persisted UI stub.
-    alert(
-      `Added ${quantity} × ${product.name} to cart (cart not wired up yet)`,
-    );
+  // Get the first variant — currently one variant per product
+  const variant = product.product_variants[0];
+
+  const handleAddToCart = async () => {
+    if (!variant) return;
+    setIsAdding(true);
+    try {
+      await addToCart(product.id, variant.id, quantity);
+      // If logged in, go to cart. If guest, stay on page
+      // (cart icon count update is enough feedback for guests)
+      if (user) {
+        router.push("/cart");
+      }
+    } catch (err) {
+      console.error("Failed to add to cart:", err);
+    } finally {
+      setIsAdding(false);
+    }
   };
 
   return (
@@ -116,10 +134,14 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         <Button
           type="button"
           onClick={handleAddToCart}
-          disabled={isOutOfStock}
+          disabled={isOutOfStock || isAdding || !variant}
           className="flex-1 bg-[#1F3D2E] py-5 text-white hover:opacity-90 disabled:opacity-40"
         >
-          {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+          {isAdding
+            ? "Adding..."
+            : isOutOfStock
+              ? "Out of Stock"
+              : "Add to Cart"}
         </Button>
       </div>
     </div>

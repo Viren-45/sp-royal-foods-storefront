@@ -61,3 +61,25 @@ export type Address = {
   is_default: boolean;
   created_at: string;
 };
+
+export type CartItem = {
+  id: string;
+  user_id: string;
+  product_id: string;
+  variant_id: string;
+  quantity: number;
+  created_at: string;
+};
+
+// Cart item joined with product and variant data — what the UI actually needs
+export type CartItemWithProduct = CartItem & {
+  product: ProductWithDetails;
+  variant: ProductVariant;
+};
+
+// Guest cart item stored in localStorage (no id/user_id needed)
+export type GuestCartItem = {
+  product_id: string;
+  variant_id: string;
+  quantity: number;
+};

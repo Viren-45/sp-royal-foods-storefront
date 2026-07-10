@@ -8,6 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, ShoppingCart, Menu, X } from "lucide-react";
 import AccountMenu from "@/components/layout/AccountMenu";
+import { useCart } from "@/context/CartContext";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -19,6 +20,7 @@ const NAV_LINKS = [
 export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { totalCount } = useCart();
 
   return (
     <header className="fixed top-0 z-50 w-full border-b border-white/40 bg-white/10 shadow-sm backdrop-blur-lg">
@@ -79,10 +81,18 @@ export default function Navbar() {
             aria-label="Cart"
             className="relative text-[#1B1B1B] transition-colors hover:text-[#1F3D2E]"
           >
-            <ShoppingCart size={20} />
-            <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#1F3D2E] text-[10px] font-medium text-white">
-              0
-            </span>
+            <Link
+              href="/cart"
+              aria-label="Cart"
+              className="relative text-[#1B1B1B] transition-colors hover:text-[#1F3D2E]"
+            >
+              <ShoppingCart size={20} />
+              {totalCount > 0 && (
+                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#1F3D2E] text-[10px] font-medium text-white">
+                  {totalCount > 99 ? "99+" : totalCount}
+                </span>
+              )}
+            </Link>
           </button>
         </div>
 
@@ -99,10 +109,18 @@ export default function Navbar() {
             aria-label="Cart"
             className="relative text-[#1B1B1B] transition-colors hover:text-[#1F3D2E]"
           >
-            <ShoppingCart size={20} />
-            <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#1F3D2E] text-[10px] font-medium text-white">
-              0
-            </span>
+            <Link
+              href="/cart"
+              aria-label="Cart"
+              className="relative text-[#1B1B1B] transition-colors hover:text-[#1F3D2E]"
+            >
+              <ShoppingCart size={20} />
+              {totalCount > 0 && (
+                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#1F3D2E] text-[10px] font-medium text-white">
+                  {totalCount > 99 ? "99+" : totalCount}
+                </span>
+              )}
+            </Link>
           </button>
           <button
             aria-label="Toggle menu"
