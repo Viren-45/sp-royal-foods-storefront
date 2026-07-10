@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { getProducts } from "@/lib/supabase/queries/products";
+import { getShippingSettings } from "@/lib/supabase/queries/settings";
 import CartClient from "@/components/cart/CartClient";
 
 export const metadata: Metadata = {
@@ -14,11 +15,18 @@ export default async function CartPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const suggestions = await getProducts(supabase);
+  const [suggestions, shippingSettings] = await Promise.all([
+    getProducts(supabase),
+    getShippingSettings(supabase),
+  ]);
 
   return (
     <main className="mx-auto max-w-7xl px-6 pb-20 pt-32">
-      <CartClient suggestions={suggestions} userId={user?.id ?? null} />
+      <CartClient
+        suggestions={suggestions}
+        userId={user?.id ?? null}
+        shippingSettings={shippingSettings}
+      />
     </main>
   );
 }

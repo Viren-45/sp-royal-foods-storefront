@@ -13,9 +13,17 @@ import type { ProductWithDetails } from "@/types";
 type CartClientProps = {
   suggestions: ProductWithDetails[];
   userId: string | null;
+  shippingSettings: {
+    flatShippingFee: number;
+    freeShippingThreshold: number;
+  };
 };
 
-export default function CartClient({ suggestions, userId }: CartClientProps) {
+export default function CartClient({
+  suggestions,
+  userId,
+  shippingSettings,
+}: CartClientProps) {
   const {
     cartItems,
     guestItems,
@@ -148,7 +156,11 @@ export default function CartClient({ suggestions, userId }: CartClientProps) {
         {/* Order summary */}
         <div className="lg:col-span-1">
           <div className="lg:sticky lg:top-28">
-            <CartSummary subtotal={subtotal} itemCount={totalCount} />
+            <CartSummary
+              subtotal={subtotal}
+              itemCount={totalCount}
+              shippingSettings={shippingSettings}
+            />
           </div>
         </div>
       </div>
